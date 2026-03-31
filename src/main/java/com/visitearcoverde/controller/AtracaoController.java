@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/atracoes")
-@CrossOrigin(origins = "*") // Permite requisições do frontend Vercel
+@CrossOrigin(origins = "*")
 public class AtracaoController {
 
     private final AtracaoService service;
