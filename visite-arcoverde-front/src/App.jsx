@@ -1,10 +1,14 @@
-import React from 'react';
-import AdminDashboard from './pages/AdminDashboard'; // Ajuste o caminho se salvou em outro lugar
+import HeroSection from './components/HeroSection';
+import MenuNavegacao from './components/MenuNavegacao';
+import MapaTuristico from './components/MapaTuristico';
 
 function App() {
   return (
     <div>
-      <AdminDashboard />
+      <HeroSection />
+      <MenuNavegacao />
+    
+      <MapaTuristico atracoes={[]} /> 
     </div>
   );
 }
