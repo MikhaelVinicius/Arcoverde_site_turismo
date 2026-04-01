@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Login from './pages/Login';
 import AdminDashboard from './pages/AdminDashboard';
 import HeroSection from './components/HeroSection';
@@ -8,47 +8,78 @@ import GuiaPratico from './components/GuiaPratico';
 import AtracaoCard from './components/AtracaoCard';
 
 function App() {
-  const [mostrarLogin, setMostrarLogin] = useState(true);
+  const [telaAtual, setTelaAtual] = useState('publica');
   const [estaAutenticado, setEstaAutenticado] = useState(false);
-  const [atracoes, setAtracoes] = useState([]);
 
-  useEffect(() => {
-    const dadosSimulados = [
-      {
-        id: 1,
-        nome: "Alto do Cruzeiro",
-        descricao: "Ponto mais alto da cidade com vista panorâmica e o tradicional Samba de Coco.",
-        latitude: -8.4115,
-        longitude: -37.0511,
-        imagemUrl: "https://via.placeholder.com/400x300?text=Alto+do+Cruzeiro"
-      },
-      {
-        id: 2,
-        nome: "CECORA",
-        descricao: "Centro Comercial de Arcoverde, o coração da economia e cultura local.",
-        latitude: -8.4190,
-        longitude: -37.0600,
-        imagemUrl: "https://via.placeholder.com/400x300?text=CECORA"
-      }
-    ];
-    setAtracoes(dadosSimulados);
-  }, []);
+  const atracoesMock = [
+    {
+      id: 1,
+      nome: "Alto do Cruzeiro",
+      descricao: "Ponto mais alto da cidade com vista panorâmica e o tradicional Samba de Coco.",
+      latitude: -8.4115,
+      longitude: -37.0511,
+      imagemUrl: "https://images.unsplash.com/photo-1518182170546-076616fd61fd?w=400&q=80"
+    },
+    {
+      id: 2,
+      nome: "CECORA",
+      descricao: "Centro Comercial de Arcoverde, o coração da economia e cultura local.",
+      latitude: -8.4190,
+      longitude: -37.0600,
+      imagemUrl: "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?w=400&q=80"
+    },
+    {
+      id: 3,
+      nome: "Samba de Coco Raízes",
+      descricao: "Tradição viva da cultura popular arcoverdense com muita música e dança.",
+      latitude: -8.4210,
+      longitude: -37.0580,
+      imagemUrl: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400&q=80"
+    }
+  ];
 
   const handleLoginSucesso = () => {
     setEstaAutenticado(true);
-    setMostrarLogin(false);
+    setTelaAtual('admin');
   };
 
-  if (mostrarLogin && !estaAutenticado) {
-    return <Login onLoginSuccess={handleLoginSucesso} />;
+  if (telaAtual === 'login') {
+    return (
+      <div className="relative">
+        <button 
+          onClick={() => setTelaAtual('publica')}
+          className="absolute top-6 left-6 text-terracota font-bold hover:underline"
+        >
+          &larr; Voltar ao Portal
+        </button>
+        <Login onLoginSuccess={handleLoginSucesso} />
+      </div>
+    );
   }
 
-  if (!mostrarLogin && estaAutenticado) {
-    return <AdminDashboard />;
+  if (telaAtual === 'admin' && estaAutenticado) {
+    return (
+      <div className="relative">
+         <button 
+          onClick={() => setTelaAtual('publica')}
+          className="fixed top-6 right-6 bg-terracota hover:bg-orange-700 text-white px-4 py-2 rounded-lg z-50 shadow-md transition"
+        >
+          Sair do Painel
+        </button>
+        <AdminDashboard />
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans">
+    <div className="min-h-screen bg-gray-50 font-sans relative">
+      <button
+        onClick={() => setTelaAtual('login')}
+        className="fixed bottom-6 right-6 bg-terracota hover:bg-orange-700 text-white px-6 py-3 rounded-full shadow-2xl z-50 font-bold transition-transform hover:scale-105"
+      >
+        Acesso Restrito
+      </button>
+
       <HeroSection />
 
       <MenuNavegacao />
@@ -58,7 +89,7 @@ function App() {
           Atrações em Destaque
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {atracoes.map((atracao) => (
+          {atracoesMock.map((atracao) => (
             <AtracaoCard key={atracao.id} atracao={atracao} />
           ))}
         </div>
@@ -71,7 +102,7 @@ function App() {
           <h2 className="text-3xl font-serif font-bold text-center text-azul mb-12">
             Explore no Mapa
           </h2>
-          <MapaTuristico atracoes={atracoes} />
+          <MapaTuristico atracoes={atracoesMock} />
         </div>
       </section>
     </div>
